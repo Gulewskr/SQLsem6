@@ -1,9 +1,10 @@
 import react from 'react';
-import router , { Link, Route } from 'react-router-dom';
+import router , { Routes, Route } from 'react-router-dom';
 import Header from './component/Header';
 
 import logo from './logo.svg';
 import './App.css';
+import React from 'react';
 
 const App = () => 
 {
@@ -13,12 +14,14 @@ const App = () =>
       <div>
         Test 
       </div>
-      <Route path={'/'}>Main Page</Route>
-      <Route path={'/cars'}>Cars</Route>
-      <Route path={'/models'}>Model</Route>
-      <Route path={'/marks'}>Mark</Route>
-      <Route path={'/clients'}>Client</Route>
-      <Route path={'/adminPanel'}>Admin</Route>
+      <Routes>
+        <Route path={'/'} element={<div>main Page</div>} />
+        <Route path={'/cars'} element={<div>cars</div>} />
+        <Route path={'/models'} element={<div>models</div>} />
+        <Route path={'/marks'} element={<div>marks</div>} />
+        <Route path={'/clients'} element={<div>clients</div>} />
+        <Route path={'/adminPanel'} element={<div>adminPanel</div>} />
+      </Routes>
     </div>
   );
 }

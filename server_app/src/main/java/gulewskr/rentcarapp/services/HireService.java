@@ -15,27 +15,37 @@ public class HireService implements IHireService {
 
     @Override
     public Hire add(Hire hire) {
-        return null;
+        return repository.save(hire);
     }
 
     @Override
     public Hire getById(long id) {
-        return null;
+        return repository.getById(id);
     }
 
     @Override
     public List<Hire> getAll() {
-        return null;
+        return repository.findAll();
     }
 
     @Override
     public Hire update(Hire hire) {
-        return null;
+        return repository.findById(hire.getId())
+                .map(old -> {
+                    old.setCar(hire.getCar());
+                    old.setClient(hire.getClient());
+                    old.setDays(hire.getDays());
+                    old.setPrice(hire.getPrice());
+                    old.setStartDate(hire.getStartDate());
+                    old.setEndDate(hire.getEndDate());
+                    return repository.save(old);
+                })
+                .orElseGet(() -> repository.save(hire));
     }
 
     @Override
     public void deleteById(long id) {
-
+        repository.deleteById(id);
     }
 
     @Override

@@ -13,6 +13,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -37,6 +42,23 @@ public class HireController {
     {
         Hire d = service.getById(id);
         return ResponseHandler.generateResponse("GetSingle ...", HttpStatus.OK, d);
+    }
+
+    @GetMapping("/excel/user/{id}")
+    public void exportToExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=users_" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+
+        List<Hire> list = service.getAll();
+
+        ExcelExporter excelExporter = new ExcelExporter(list);
+
+        excelExporter.export(response);
     }
 
     @PostMapping()

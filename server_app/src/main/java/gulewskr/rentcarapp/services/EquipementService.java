@@ -15,26 +15,35 @@ public class EquipementService implements IEquipmentService {
 
     @Override
     public Equipment add(Equipment equipment) {
-        return null;
+        return repository.save(equipment);
     }
 
     @Override
     public Equipment getById(long id) {
-        return null;
+        return repository.getById(id);
     }
 
     @Override
     public List<Equipment> getAll() {
-        return null;
+        return repository.findAll();
     }
 
     @Override
     public Equipment update(Equipment equipment) {
-        return null;
+        return repository.findById(equipment.getId())
+                .map(old -> {
+                    old.setShortname(equipment.getShortname());
+                    old.setPriceCoeff(equipment.getPriceCoeff());
+                    old.setPrice(equipment.getPrice());
+                    old.setDescription(equipment.getDescription());
+                    old.setName(equipment.getName());
+                    return repository.save(old);
+                })
+                .orElseGet(() -> repository.save(equipment));
     }
 
     @Override
     public void deleteById(long id) {
-
+        repository.deleteById(id);
     }
 }

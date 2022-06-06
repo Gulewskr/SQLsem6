@@ -15,27 +15,37 @@ public class CarsService implements ICarService{
 
     @Override
     public Car add(Car car) {
-        return null;
+        return repository.save(car);
     }
 
     @Override
     public List<Car> getAll() {
-        return null;
+        return repository.findAll();
     }
 
     @Override
     public Car getById(long id) {
-        return null;
+        return repository.getById(id);
     }
 
     @Override
     public Car update(Car car) {
-        return null;
+        return repository.findById(car.getId())
+                .map(old -> {
+                    old.setBasicPrice(car.getBasicPrice());
+                    old.setColor(car.getColor());
+                    old.setEquipementList(car.getEquipementList());
+                    old.setModel(car.getModel());
+                    old.setPlate(car.getPlate());
+                    old.setYearCar(car.getYearCar());
+                    return repository.save(old);
+                })
+                .orElseGet(() -> repository.save(car));
     }
 
     @Override
     public void deleteById(long id) {
-
+        repository.deleteById(id);
     }
 
     @Override

@@ -20,22 +20,28 @@ public class ModelsService implements IModelService {
 
     @Override
     public List<Model> getAll() {
-        return null;
+        return repository.findAll();
     }
 
     @Override
     public Model getById(long id) {
-        return null;
+        return repository.getById(id);
     }
 
     @Override
     public Model update(Model model) {
-        return null;
+        return repository.findById(model.getId())
+                .map(old -> {
+                    old.setMark(model.getMark());
+                    old.setName(model.getName());
+                    return repository.save(old);
+                })
+                .orElseGet(() -> repository.save(model));
     }
 
     @Override
     public void deleteById(long id) {
-
+        repository.deleteById(id);
     }
 
     @Override
@@ -45,6 +51,7 @@ public class ModelsService implements IModelService {
 
     @Override
     public List<Model> getByMarkIDs(long[] markId) {
+
         return null;
     }
 }

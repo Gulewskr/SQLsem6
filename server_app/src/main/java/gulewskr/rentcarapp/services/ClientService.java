@@ -15,26 +15,36 @@ public class ClientService implements IClientService {
 
     @Override
     public Client add(Client client) {
-        return null;
+        return repository.save(client);
     }
 
     @Override
     public Client getById(long id) {
-        return null;
+        return repository.getById(id);
     }
 
     @Override
     public List<Client> getAll() {
-        return null;
+        return repository.findAll();
     }
 
     @Override
     public Client update(Client client) {
-        return null;
+        return repository.findById(client.getId())
+                .map(old -> {
+                    old.setEmail(client.getEmail());
+                    old.setBorndate(client.getBorndate());
+                    old.setName(client.getName());
+                    old.setPesel(client.getPesel());
+                    old.setPhonenumber(client.getPhonenumber());
+                    old.setSurname(client.getSurname());
+                    return repository.save(old);
+                })
+                .orElseGet(() -> repository.save(client));
     }
 
     @Override
     public void deleteById(long id) {
-
+        repository.deleteById(id);
     }
 }
